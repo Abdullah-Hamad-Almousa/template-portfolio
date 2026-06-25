@@ -1,0 +1,49 @@
+{
+  "kind": "critique-panel",
+  "score": 5,
+  "axes": {
+    "clarity": {
+      "score": 5,
+      "notes": "Each section reads as one idea: hero establishes the brand and offer; search-changed articulates the problem; mission reveals the philosophy word-by-word; solution presents the platform; CTA closes with two clear actions. No section overloads itself. Copy is concrete (real platform names, real feature titles) — no filler / no invented metrics."
+    },
+    "hierarchy": {
+      "score": 5,
+      "notes": "Display type ramps from 5xl → 8xl; the hero and mission sentences dominate. Subtitle, avatars, form, and tagline all sit clearly subordinate to the headline. Mission section's word-by-word opacity reveal creates a secondary hierarchy that pins the eye to whichever word has scrolled into view. The liquid-glass form stays readable against the dark video."
+    },
+    "execution": {
+      "score": 5,
+      "notes": "Inter / Instrument Serif pair is exactly the locked pairing. Letter-spacing on display headlines (-1px / -1.5px / -2px) matches the seed. Liquid-glass is implemented with the exact gradient stops from the skill (45% / 15% / 0% / 0% / 15% / 45% with 1.4px masked border). All HSL tokens emitted correctly into the production CSS. Avatar row negative spacing matches the seed (-8px). CTA background uses hls.js with Safari native fallback."
+    },
+    "specificity": {
+      "score": 5,
+      "notes": "Copy names the actual product (Mindloop), the actual problem (search shifted to AI conversations), the actual platforms (ChatGPT / Perplexity / Google AI), the actual features (Curated Feed / Writer Tools / Community / Distribution), and the actual actions (Subscribe Now / Start Writing). No 'Feature One', no invented stats. The mission paragraph is genuine product philosophy, not lorem ipsum."
+    },
+    "restraint": {
+      "score": 5,
+      "notes": "Monochrome is honored: pure black canvas, pure white text, one near-white subtitle token. No accent colors in the visible UI. The single gradient is the hero bottom fade and the liquid-glass border highlight — both load-bearing. One decisive flourish per section: word-by-word mission reveal, HLS video CTA, 3:1 aspect solution video. No competing flourishes."
+    }
+  },
+  "checklist": {
+    "P0": {
+      "monochrome_only": "pass — no colors beyond HSL grey ramp + hero-subtitle",
+      "videos_playing": "pass — hero/mission/solution MP4s autoplay/loop/muted/playsInline; CTA uses hls.js with Safari fallback",
+      "data_uri_assets": "pass — 3 avatars and 3 AI platform icons inlined as data:image/svg+xml;base64",
+      "instrument_serif_italic": "pass — .serif class used on Inspired / changed / meaningful / Journey",
+      "liquid_glass_used_three_times": "pass — 3 navbar social buttons, hero email form, Start Writing CTA",
+      "responsive_breakpoints": "pass — mobile (sm/md), tablet (md), desktop (lg) all adjust nav, grids, heading sizes, padding"
+    },
+    "P1": {
+      "fadeUp_reveals": "pass — IntersectionObserver via Framer Motion whileInView, margin -100px, once: true",
+      "scroll_word_reveal": "pass — useScroll + per-word useTransform (opacity 0.15 → 1)",
+      "highlight_words_snap": "pass — curiosity / meets / clarity snap to --foreground at progress > 0.6",
+      "typecheck_passes": "pass — tsc -b --noEmit clean",
+      "production_build_passes": "pass — vite build emits dist/ cleanly with no warnings"
+    },
+    "P2": {
+      "prefers_reduced_motion": "pass — reduced motion media query strips transition/animation durations",
+      "accessible_focus": "pass — semantic landmarks (header/main/footer/section/nav), aria-labels on social buttons and email input",
+      "selectable_text": "pass — body and mission paragraphs are real DOM spans, not canvas",
+      "HLS_safari_fallback": "pass — code path checks Hls.isSupported() and falls back to canPlayType('application/vnd.apple.mpegurl')"
+    }
+  }
+}
