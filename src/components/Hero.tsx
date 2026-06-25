@@ -12,6 +12,7 @@ export function Hero() {
     e.preventDefault();
     if (!email) return;
     setSubmitted(true);
+    window.location.href = `mailto:abdullahmlwork@gmail.com?subject=Portfolio%20Connection&body=Hi%20Abdullah,%0D%0A%0D%0AMy%20email%20is%20${email}.%20I'd%20love%20to%20connect%20and%20discuss%20ML%20opportunities!`;
     setTimeout(() => setSubmitted(false), 2200);
   };
 
@@ -38,18 +39,18 @@ export function Hero() {
               />
             ))}
           </div>
-          <span className="text-sm text-muted-foreground">7,000+ people already subscribed</span>
+          <span className="text-sm text-muted-foreground">Machine Learning Engineer</span>
         </FadeUp>
 
         <FadeUp as="h1" delay={0.08}>
           <span className="block text-5xl md:text-7xl lg:text-8xl font-medium leading-[1.02] tracking-tighter3 mb-6">
-            Get <span className="serif">Inspired</span> with Us
+            Abdullah <span className="serif">Almousa</span>
           </span>
         </FadeUp>
 
         <FadeUp as="p" delay={0.16}>
           <span className="block text-lg leading-relaxed text-hero-subtitle max-w-[600px] mx-auto mb-9">
-            Join our feed for meaningful updates, news around technology and a shared journey toward depth and direction.
+            Advancing EDA and Algorithms to solve complex business problems.
           </span>
         </FadeUp>
 
@@ -63,7 +64,7 @@ export function Hero() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@yourdomain.com"
+              placeholder="Enter your email..."
               aria-label="Email"
               className="flex-1 bg-transparent border-0 outline-none text-foreground placeholder:text-muted-foreground text-[0.95rem] px-4 py-2.5"
             />
@@ -74,7 +75,7 @@ export function Hero() {
               transition={{ duration: 0.15, ease: "easeOut" }}
               className="bg-foreground text-background rounded-full px-8 py-3 font-semibold text-[0.9rem] tracking-wider"
             >
-              {submitted ? "SUBSCRIBED" : "SUBSCRIBE"}
+              {submitted ? "SENT" : "CONNECT"}
             </motion.button>
           </form>
         </FadeUp>

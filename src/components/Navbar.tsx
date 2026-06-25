@@ -1,14 +1,20 @@
-import { Instagram, Linkedin, Twitter } from "lucide-react";
+import { Github, Linkedin, Globe } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const NAV_LINKS = [
-  { label: "Home", href: "#" },
-  { label: "How It Works", href: "#how" },
-  { label: "Philosophy", href: "#philosophy" },
-  { label: "Use Cases", href: "#usecases" },
+  { id: "home", label: "Home" },
+  { id: "capabilities", label: "Capabilities" },
+  { id: "contact", label: "Contact" },
+  { id: "links", label: "Links" },
+  { id: "books", label: "Books" },
 ];
 
-export function Navbar() {
+interface NavbarProps {
+  activePage: string;
+  setActivePage: (page: string) => void;
+}
+
+export function Navbar({ activePage, setActivePage }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -26,52 +32,68 @@ export function Navbar() {
         (scrolled ? "bg-background/70 backdrop-blur-md" : "bg-transparent")
       }
     >
-      <div className="flex items-center gap-2.5">
+      <div
+        className="flex items-center gap-2.5 cursor-pointer"
+        onClick={() => {
+          setActivePage("home");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
+      >
         <div className="relative w-7 h-7 grid place-items-center">
           <div className="w-7 h-7 rounded-full border-2 border-foreground/60" />
           <div className="absolute w-3 h-3 rounded-full border border-foreground/60" />
         </div>
-        <span className="font-bold text-[1.05rem] tracking-tight">Mindloop</span>
+        <span className="font-bold text-[1.05rem] tracking-tight">Abdullah Almousa</span>
       </div>
 
-      <div className="hidden md:flex items-center gap-2.5 text-sm">
+      <div className="hidden md:flex items-center gap-3 text-sm">
         {NAV_LINKS.map((link, i) => (
-          <span key={link.label} className="flex items-center gap-2.5">
-            <a
-              href={link.href}
-              className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+          <span key={link.id} className="flex items-center gap-3">
+            <button
+              onClick={() => {
+                setActivePage(link.id);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className={`transition-colors duration-200 uppercase tracking-wider text-[11px] font-semibold ${
+                activePage === link.id
+                  ? "text-primary font-bold"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
             >
               {link.label}
-            </a>
+            </button>
             {i < NAV_LINKS.length - 1 && (
-              <span className="text-muted-foreground opacity-50">•</span>
+              <span className="text-muted-foreground opacity-30">•</span>
             )}
           </span>
         ))}
       </div>
 
       <div className="flex items-center gap-2.5">
-        <SocialButton label="Instagram">
-          <Instagram size={18} strokeWidth={2} />
+        <SocialButton label="GitHub" href="https://github.com/Abdullah-Hamad-Almousa">
+          <Github size={18} strokeWidth={2} />
         </SocialButton>
-        <SocialButton label="LinkedIn">
+        <SocialButton label="LinkedIn" href="https://www.linkedin.com/in/abdullah-almousa-a76562237">
           <Linkedin size={18} strokeWidth={2} />
         </SocialButton>
-        <SocialButton label="Twitter">
-          <Twitter size={18} strokeWidth={2} />
+        <SocialButton label="Kaggle" href="https://www.kaggle.com/abdullahhamadalmousa">
+          <Globe size={18} strokeWidth={2} />
         </SocialButton>
       </div>
     </nav>
   );
 }
 
-function SocialButton({ label, children }: { label: string; children: React.ReactNode }) {
+function SocialButton({ label, href, children }: { label: string; href: string; children: React.ReactNode }) {
   return (
-    <button
+    <a
       aria-label={label}
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
       className="liquid-glass w-10 h-10 rounded-full grid place-items-center text-foreground hover:scale-105 active:scale-95 transition-transform duration-200"
     >
       {children}
-    </button>
+    </a>
   );
 }

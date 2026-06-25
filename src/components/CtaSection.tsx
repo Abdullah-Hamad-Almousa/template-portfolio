@@ -26,13 +26,13 @@ export function CtaSection() {
 
         <FadeUp as="h2" delay={0.08}>
           <span className="block text-5xl md:text-7xl lg:text-8xl font-medium leading-[1.02] tracking-tighter3 mb-5">
-            Start Your <span className="serif">Journey</span>
+            Let's <span className="serif">Connect</span>
           </span>
         </FadeUp>
 
         <FadeUp as="p" delay={0.16}>
           <span className="block text-muted-foreground text-[1.05rem] max-w-[560px] mx-auto mb-9 leading-relaxed">
-            A quieter place to read, write, and think — together. Join thousands of curious minds building something worth following.
+            Looking for a machine learning engineer to solve complex algorithmic challenges, build neural models, or optimize data pipelines? Let's build together.
           </span>
         </FadeUp>
 
@@ -42,18 +42,22 @@ export function CtaSection() {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.15 }}
+              onClick={() => window.location.href = "mailto:abdullahmlwork@gmail.com?subject=Project%20Inquiry"}
               className="bg-foreground text-background rounded-[10px] px-8 py-3.5 font-semibold text-[0.9rem]"
             >
-              Subscribe Now
+              Email Me
             </motion.button>
-            <motion.button
+            <motion.a
+              href="https://abdullah-hamad-almousa.github.io/MyNewPortfolio/pages/almousa_CV3.html"
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.15 }}
-              className="liquid-glass rounded-[10px] px-8 py-3.5 font-semibold text-[0.9rem] text-foreground"
+              className="liquid-glass rounded-[10px] px-8 py-3.5 font-semibold text-[0.9rem] text-foreground flex items-center justify-center"
             >
-              Start Writing
-            </motion.button>
+              View CV
+            </motion.a>
           </div>
         </FadeUp>
       </div>

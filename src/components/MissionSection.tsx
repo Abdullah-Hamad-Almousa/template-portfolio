@@ -3,11 +3,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { LossCurveCanvas } from "./backdrops/LossCurveCanvas";
 
 const PARAGRAPH_1 =
-  "We're building a space where curiosity meets clarity — where readers find depth, writers find reach, and every newsletter becomes a conversation worth having.";
+  "I build systems where raw data meets advanced algorithms — designing optimized pipelines, exploring high-dimensional features, and crafting neural models that turn complexity into clarity.";
 const PARAGRAPH_2 =
-  "A platform where content, community, and insight flow together — with less noise, less friction, and more meaning for everyone involved.";
+  "An engineering approach focused on mathematical precision, computational scale, and model reproducibility — filtering out the noise to deliver actual predictive value.";
 
-const HIGHLIGHTS = new Set(["curiosity", "meets", "clarity"]);
+const HIGHLIGHTS = new Set(["data", "meets", "algorithms", "precision", "scale"]);
 
 function tokenize(text: string): string[] {
   return text.split(/(\s+)/);
