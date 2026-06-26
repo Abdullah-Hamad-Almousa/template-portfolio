@@ -12,9 +12,10 @@ const NAV_LINKS = [
 interface NavbarProps {
   activePage: string;
   setActivePage: (page: string) => void;
+  showHidden: boolean;
 }
 
-export function Navbar({ activePage, setActivePage }: NavbarProps) {
+export function Navbar({ activePage, setActivePage, showHidden }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -23,6 +24,10 @@ export function Navbar({ activePage, setActivePage }: NavbarProps) {
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const visibleLinks = NAV_LINKS.filter(
+    (link) => showHidden || (link.id !== "links" && link.id !== "books")
+  );
 
   return (
     <nav
@@ -48,7 +53,7 @@ export function Navbar({ activePage, setActivePage }: NavbarProps) {
       </div>
 
       <div className="hidden md:flex items-center gap-3 text-sm">
-        {NAV_LINKS.map((link, i) => (
+        {visibleLinks.map((link, i) => (
           <span key={link.id} className="flex items-center gap-3">
             <button
               onClick={() => {
@@ -63,7 +68,7 @@ export function Navbar({ activePage, setActivePage }: NavbarProps) {
             >
               {link.label}
             </button>
-            {i < NAV_LINKS.length - 1 && (
+            {i < visibleLinks.length - 1 && (
               <span className="text-muted-foreground opacity-30">•</span>
             )}
           </span>

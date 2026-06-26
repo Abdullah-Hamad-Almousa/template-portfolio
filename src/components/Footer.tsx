@@ -4,13 +4,17 @@ const FOOTER_LINKS = [
   { label: "Kaggle", href: "https://www.kaggle.com/abdullahhamadalmousa" },
 ];
 
-export function Footer() {
+interface FooterProps {
+  onToggleHidden: () => void;
+}
+
+export function Footer({ onToggleHidden }: FooterProps) {
   return (
     <footer className="flex items-center justify-between flex-wrap gap-4 py-12 px-6 md:px-14 lg:px-28 border-t border-border/20">
       <span className="text-sm text-muted-foreground">
         © 2026 Abdullah Almousa. All rights reserved.
       </span>
-      <div className="flex gap-6 text-sm">
+      <div className="flex items-center gap-6 text-sm">
         {FOOTER_LINKS.map((link) => (
           <a
             key={link.label}
@@ -22,6 +26,17 @@ export function Footer() {
             {link.label}
           </a>
         ))}
+        <button
+          onClick={onToggleHidden}
+          className="w-5 h-5 flex items-center justify-center focus:outline-none cursor-default"
+          aria-label="Toggle Pages"
+        >
+          <img
+            src="/logo.png"
+            alt="Toggle Logo"
+            className="w-4 h-4 object-contain opacity-50 cursor-default"
+          />
+        </button>
       </div>
     </footer>
   );
