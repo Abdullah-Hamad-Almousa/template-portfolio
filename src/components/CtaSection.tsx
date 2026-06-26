@@ -18,9 +18,12 @@ export function CtaSection() {
 
       <div className="relative z-10 container text-center">
         <FadeUp delay={0}>
-          <div className="relative w-10 h-10 mx-auto mb-7 grid place-items-center">
-            <div className="w-10 h-10 rounded-full border-2 border-foreground/60" />
-            <div className="absolute w-5 h-5 rounded-full border border-foreground/60" />
+          <div className="relative w-12 h-12 mx-auto mb-7 grid place-items-center">
+            <img
+              src="/logo.png"
+              alt="Logo"
+              className="w-12 h-12 object-contain"
+            />
           </div>
         </FadeUp>
 
@@ -32,7 +35,7 @@ export function CtaSection() {
 
         <FadeUp as="p" delay={0.16}>
           <span className="block text-muted-foreground text-[1.05rem] max-w-[560px] mx-auto mb-9 leading-relaxed">
-            Looking for a machine learning engineer to solve complex algorithmic challenges, build neural models, or optimize data pipelines? Let's build together.
+            Looking for a machine learning developer to solve complex algorithmic challenges, build neural models, or optimize data pipelines? Let's build together.
           </span>
         </FadeUp>
 

@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { AVATAR_SVG_1, AVATAR_SVG_2, AVATAR_SVG_3 } from "../assets";
 import { FadeUp } from "./FadeUp";
 import { NeuralBackdrop } from "./backdrops/NeuralBackdrop";
 
@@ -27,19 +26,16 @@ export function Hero() {
       />
 
       <div className="relative z-10 text-center px-6 pt-28 md:pt-32 max-w-[760px] w-full">
-        <FadeUp className="flex items-center justify-center gap-3 mb-7" delay={0}>
-          <div className="flex">
-            {[AVATAR_SVG_1, AVATAR_SVG_2, AVATAR_SVG_3].map((src, i) => (
-              <img
-                key={i}
-                src={src}
-                alt=""
-                className="w-8 h-8 rounded-full border-2 border-background object-cover"
-                style={{ marginLeft: i === 0 ? 0 : -8 }}
-              />
-            ))}
+        <FadeUp className="flex flex-col items-center justify-center gap-4 mb-7" delay={0}>
+          <div className="relative group">
+            <div className="absolute inset-0 bg-cyan-500/10 rounded-2xl blur-xl group-hover:bg-cyan-500/20 transition-all duration-500" />
+            <img
+              src="/full-logo.png"
+              alt="Abdullah Almousa Full Logo"
+              className="relative w-24 h-24 md:w-28 md:h-28 object-cover rounded-2xl border border-border/20 shadow-md transition-transform duration-300 group-hover:scale-105"
+            />
           </div>
-          <span className="text-sm text-muted-foreground">Machine Learning Engineer</span>
+          <span className="text-sm text-muted-foreground tracking-wider uppercase">Machine Learning Developer</span>
         </FadeUp>
 
         <FadeUp as="h1" delay={0.08}>

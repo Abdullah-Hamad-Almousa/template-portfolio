@@ -39,10 +39,11 @@ export function Navbar({ activePage, setActivePage }: NavbarProps) {
           window.scrollTo({ top: 0, behavior: "smooth" });
         }}
       >
-        <div className="relative w-7 h-7 grid place-items-center">
-          <div className="w-7 h-7 rounded-full border-2 border-foreground/60" />
-          <div className="absolute w-3 h-3 rounded-full border border-foreground/60" />
-        </div>
+        <img
+          src="/logo.png"
+          alt="Logo"
+          className="w-8 h-8 object-contain"
+        />
         <span className="font-bold text-[1.05rem] tracking-tight">Abdullah Almousa</span>
       </div>
 
