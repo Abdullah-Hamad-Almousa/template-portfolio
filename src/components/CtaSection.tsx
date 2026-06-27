@@ -18,12 +18,14 @@ export function CtaSection() {
 
       <div className="relative z-10 container text-center">
         <FadeUp delay={0}>
-          <div className="relative w-12 h-12 mx-auto mb-7 grid place-items-center">
-            <img
-              src="/logo.png"
-              alt="Logo"
-              className="w-12 h-12 object-contain"
-            />
+          <div className="relative w-12 h-12 mx-auto mb-7 grid place-items-center float-water">
+            <div className="relative w-12 h-12 rounded-xl shadow-md overflow-hidden liquid-glass grid place-items-center water-shine">
+              <img
+                src="logo.png"
+                alt="Logo"
+                className="w-[1.8rem] h-[1.8rem] object-contain"
+              />
+            </div>
           </div>
         </FadeUp>
 

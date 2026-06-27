@@ -28,11 +28,11 @@ export function Footer({ onToggleHidden }: FooterProps) {
         ))}
         <button
           onClick={onToggleHidden}
-          className="w-5 h-5 flex items-center justify-center focus:outline-none cursor-default"
+          className="w-5 h-5 flex items-center justify-center focus:outline-none cursor-default float-water"
           aria-label="Toggle Pages"
         >
           <img
-            src="/logo.png"
+            src="logo.png"
             alt="Toggle Logo"
             className="w-4 h-4 object-contain opacity-50 cursor-default"
           />

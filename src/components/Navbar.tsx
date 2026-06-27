@@ -44,11 +44,13 @@ export function Navbar({ activePage, setActivePage, showHidden }: NavbarProps) {
           window.scrollTo({ top: 0, behavior: "smooth" });
         }}
       >
-        <img
-          src="/logo.png"
-          alt="Logo"
-          className="w-8 h-8 object-contain"
-        />
+        <div className="relative w-8 h-8 rounded-full shadow-sm overflow-hidden liquid-glass grid place-items-center water-shine float-water">
+          <img
+            src="logo.png"
+            alt="Logo"
+            className="w-[1.35rem] h-[1.35rem] object-contain"
+          />
+        </div>
         <span className="font-bold text-[1.05rem] tracking-tight">Abdullah Almousa</span>
       </div>
 

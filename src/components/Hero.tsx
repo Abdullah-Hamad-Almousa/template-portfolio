@@ -27,13 +27,15 @@ export function Hero() {
 
       <div className="relative z-10 text-center px-6 pt-28 md:pt-32 max-w-[760px] w-full">
         <FadeUp className="flex flex-col items-center justify-center gap-4 mb-7" delay={0}>
-          <div className="relative group">
+          <div className="relative group float-water">
             <div className="absolute inset-0 bg-cyan-500/10 rounded-2xl blur-xl group-hover:bg-cyan-500/20 transition-all duration-500" />
-            <img
-              src="/full-logo.png"
-              alt="Abdullah Almousa Full Logo"
-              className="relative w-24 h-24 md:w-28 md:h-28 object-cover rounded-2xl border border-border/20 shadow-md transition-transform duration-300 group-hover:scale-105"
-            />
+            <div className="relative w-24 h-24 md:w-28 md:h-28 rounded-2xl overflow-hidden liquid-glass shadow-md water-shine flex items-center justify-center p-1">
+              <img
+                src="full-logo.png"
+                alt="Abdullah Almousa Full Logo"
+                className="w-full h-full object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
+              />
+            </div>
           </div>
           <span className="text-sm text-muted-foreground tracking-wider uppercase">Machine Learning Developer</span>
         </FadeUp>
