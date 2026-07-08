@@ -12,8 +12,11 @@ import { Capabilities } from "./components/Capabilities";
 import { Contact } from "./components/Contact";
 import { Links } from "./components/Links";
 import { Books } from "./components/Books";
+import { LanguageProvider } from "./context/LanguageContext";
+import { useLanguage } from "./hooks/useLanguage";
 
-export default function App() {
+function AppContent() {
+  const { dir } = useLanguage();
   const [activePage, setActivePage] = useState("home");
   const [showHidden, setShowHidden] = useState(() => {
     if (typeof window !== "undefined") {
@@ -79,7 +82,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col justify-between overflow-x-hidden">
+    <div
+      dir={dir}
+      className="min-h-screen bg-background text-foreground flex flex-col justify-between overflow-x-hidden"
+    >
       <Navbar activePage={activePage} setActivePage={setActivePage} showHidden={showHidden} />
       <div className="flex-grow">
         <AnimatePresence mode="wait">
@@ -96,5 +102,13 @@ export default function App() {
       </div>
       <Footer onToggleHidden={toggleHidden} />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }

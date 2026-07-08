@@ -2,8 +2,10 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Mail, MapPin, Send, CheckCircle, AlertCircle } from "lucide-react";
 import { FadeUp } from "./FadeUp";
+import { useLanguage } from "../hooks/useLanguage";
 
 export function Contact() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     inquiryType: "",
     name: "",
@@ -18,9 +20,7 @@ export function Contact() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null);
-  const [errorMessage, setErrorMessage] = useState(
-    "Failed to send message. Please try again or email directly."
-  );
+  const [errorMessage, setErrorMessage] = useState("");
   const [isWorkingHours, setIsWorkingHours] = useState(true);
 
   // Check if current Riyadh time is between 9 AM and 6 PM AST (UTC+3)
@@ -48,19 +48,19 @@ export function Contact() {
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
-    if (!formData.inquiryType) newErrors.inquiryType = "Please select an inquiry type";
-    if (!formData.name.trim()) newErrors.name = "Full name is required";
+    if (!formData.inquiryType) newErrors.inquiryType = t.contact.validationInquiryType;
+    if (!formData.name.trim()) newErrors.name = t.contact.validationFullName;
     
     if (!formData.email.trim()) {
-      newErrors.email = "Email address is required";
+      newErrors.email = t.contact.validationEmailRequired;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = t.contact.validationEmailInvalid;
     }
     
-    if (!formData.organization.trim()) newErrors.organization = "Organization is required";
-    if (!formData.role.trim()) newErrors.role = "Your role is required";
-    if (!formData.subject.trim()) newErrors.subject = "Subject is required";
-    if (!formData.message.trim()) newErrors.message = "Message is required";
+    if (!formData.organization.trim()) newErrors.organization = t.contact.validationOrganization;
+    if (!formData.role.trim()) newErrors.role = t.contact.validationRole;
+    if (!formData.subject.trim()) newErrors.subject = t.contact.validationSubject;
+    if (!formData.message.trim()) newErrors.message = t.contact.validationMessage;
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -156,22 +156,26 @@ export function Contact() {
         if (data.errors && Array.isArray(data.errors)) {
           setErrors(Object.fromEntries(data.errors.map((e: { field: string; message: string }) => [e.field, e.message])));
         }
-        setErrorMessage("Please check the form fields and try again.");
+        setErrorMessage(t.contact.errorFields);
         setSubmitStatus("error");
       } else if (response.status === 429) {
-        setErrorMessage("Too many requests. Please try again later.");
+        setErrorMessage(t.contact.errorTooMany);
         setSubmitStatus("error");
       } else {
-        setErrorMessage("Something went wrong. Please try again or email directly.");
+        setErrorMessage(t.contact.errorGeneric);
         setSubmitStatus("error");
       }
     } catch {
-      setErrorMessage("Network error. Please check your connection and try again.");
+      setErrorMessage(t.contact.errorNetwork);
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const headingParts = t.contact.heading.split(t.contact.headingSerifWord);
+  const headingBefore = headingParts[0] ?? "";
+  const headingAfter = headingParts.slice(1).join(t.contact.headingSerifWord) ?? "";
 
   return (
     <section className="pt-28 pb-20 container max-w-5xl">
@@ -181,12 +185,12 @@ export function Contact() {
           <div>
             <FadeUp as="div" delay={0}>
               <span className="block text-xs tracking-[3px] uppercase text-muted-foreground mb-3">
-                GET IN TOUCH
+                {t.contact.tag}
               </span>
             </FadeUp>
             <FadeUp as="h1" delay={0.08}>
               <span className="block text-5xl font-medium tracking-tightish">
-                Contact <span className="serif">Me</span>
+                {headingBefore}<span className="serif">{t.contact.headingSerifWord}</span>{headingAfter}
               </span>
             </FadeUp>
           </div>
@@ -205,13 +209,13 @@ export function Contact() {
                 ></span>
               </span>
               <span className="text-xs font-medium text-foreground/80">
-                {isWorkingHours ? "Active Now (Working)" : "Away (Off-hours)"}
+                {isWorkingHours ? t.contact.activeNow : t.contact.away}
               </span>
             </div>
           </FadeUp>
 
           <FadeUp as="p" delay={0.2} className="text-muted-foreground text-sm leading-relaxed">
-            Reach out for machine learning projects, algorithm designs, data pipelines, or technical consultations. I am typically responsive within 24 hours.
+            {t.contact.description}
           </FadeUp>
 
           {/* Contact Details */}
@@ -221,7 +225,7 @@ export function Contact() {
                 <Mail size={16} />
               </div>
               <div>
-                <span className="text-xs text-muted-foreground block">Email</span>
+                <span className="text-xs text-muted-foreground block">{t.contact.emailLabel}</span>
                 <a href="mailto:abdullahalmousa@modelai.website" className="hover:underline">
                   abdullahalmousa@modelai.website
                 </a>
@@ -233,8 +237,8 @@ export function Contact() {
                 <MapPin size={16} />
               </div>
               <div>
-                <span className="text-xs text-muted-foreground block">Location</span>
-                <span>Riyadh, Saudi Arabia (AST UTC+3)</span>
+                <span className="text-xs text-muted-foreground block">{t.contact.locationLabel}</span>
+                <span>{t.contact.locationValue}</span>
               </div>
             </div>
           </FadeUp>
@@ -259,7 +263,7 @@ export function Contact() {
                 {/* Inquiry Type */}
                 <div className="space-y-1.5">
                   <label className="text-xs font-semibold text-muted-foreground uppercase">
-                    Inquiry Type
+                    {t.contact.inquiryTypeLabel}
                   </label>
                   <select
                     name="inquiryType"
@@ -270,16 +274,16 @@ export function Contact() {
                     }`}
                   >
                     <option value="" disabled className="bg-background">
-                      Select inquiry type...
+                      {t.contact.inquiryTypePlaceholder}
                     </option>
                     <option value="collaboration" className="bg-background">
-                      Collaboration
+                      {t.contact.inquiryOptions.collaboration}
                     </option>
                     <option value="job" className="bg-background">
-                      Job Opportunity
+                      {t.contact.inquiryOptions.jobOpportunity}
                     </option>
                     <option value="technical" className="bg-background">
-                      Technical Discussion
+                      {t.contact.inquiryOptions.technicalDiscussion}
                     </option>
                   </select>
                   {errors.inquiryType && (
@@ -291,12 +295,12 @@ export function Contact() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-semibold text-muted-foreground uppercase">
-                      Full Name
+                      {t.contact.fullNameLabel}
                     </label>
                     <input
                       type="text"
                       name="name"
-                      placeholder="Mohammad Ali"
+                      placeholder={t.contact.fullNamePlaceholder}
                       value={formData.name}
                       onChange={handleInputChange}
                       className={`w-full bg-background/50 border rounded-lg px-4 py-2.5 text-sm outline-none text-foreground ${
@@ -308,12 +312,12 @@ export function Contact() {
 
                   <div className="space-y-1.5">
                     <label className="text-xs font-semibold text-muted-foreground uppercase">
-                      Email Address
+                      {t.contact.emailAddressLabel}
                     </label>
                     <input
                       type="email"
                       name="email"
-                      placeholder="ali@example.com"
+                      placeholder={t.contact.emailAddressPlaceholder}
                       value={formData.email}
                       onChange={handleInputChange}
                       className={`w-full bg-background/50 border rounded-lg px-4 py-2.5 text-sm outline-none text-foreground ${
@@ -328,13 +332,13 @@ export function Contact() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-semibold text-muted-foreground uppercase">
-                      Organization
+                      {t.contact.organizationLabel}
                     </label>
                     <div className="relative flex items-center">
                       <input
                         type="text"
                         name="organization"
-                        placeholder="Company Name"
+                        placeholder={t.contact.organizationPlaceholder}
                         value={formData.organization}
                         onChange={handleInputChange}
                         className={`w-full bg-background/50 border rounded-lg pl-4 pr-16 py-2.5 text-sm outline-none text-foreground ${
@@ -346,7 +350,7 @@ export function Contact() {
                         onClick={handleNoneClick}
                         className="absolute right-2 px-2.5 py-1 rounded bg-foreground/10 text-[10px] font-semibold text-muted-foreground hover:text-foreground transition-all"
                       >
-                        None
+                        {t.contact.noneButton}
                       </button>
                     </div>
                     {errors.organization && (
@@ -356,12 +360,12 @@ export function Contact() {
 
                   <div className="space-y-1.5">
                     <label className="text-xs font-semibold text-muted-foreground uppercase">
-                      Your Role
+                      {t.contact.yourRoleLabel}
                     </label>
                     <input
                       type="text"
                       name="role"
-                      placeholder="e.g. Recruiter"
+                      placeholder={t.contact.yourRolePlaceholder}
                       value={formData.role}
                       onChange={handleInputChange}
                       className={`w-full bg-background/50 border rounded-lg px-4 py-2.5 text-sm outline-none text-foreground ${
@@ -375,12 +379,12 @@ export function Contact() {
                 {/* Subject */}
                 <div className="space-y-1.5">
                   <label className="text-xs font-semibold text-muted-foreground uppercase">
-                    Subject
+                    {t.contact.subjectLabel}
                   </label>
                   <input
                     type="text"
                     name="subject"
-                    placeholder="What is this regarding?"
+                    placeholder={t.contact.subjectPlaceholder}
                     value={formData.subject}
                     onChange={handleInputChange}
                     className={`w-full bg-background/50 border rounded-lg px-4 py-2.5 text-sm outline-none text-foreground ${
@@ -393,12 +397,12 @@ export function Contact() {
                 {/* Message */}
                 <div className="space-y-1.5">
                   <label className="text-xs font-semibold text-muted-foreground uppercase">
-                    Message
+                    {t.contact.messageLabel}
                   </label>
                   <textarea
                     name="message"
                     rows={4}
-                    placeholder="Type your message here..."
+                    placeholder={t.contact.messagePlaceholder}
                     value={formData.message}
                     onChange={handleInputChange}
                     className={`w-full bg-background/50 border rounded-lg px-4 py-2.5 text-sm outline-none text-foreground resize-none ${
@@ -417,7 +421,7 @@ export function Contact() {
                   className="w-full flex items-center justify-center gap-2 bg-foreground text-background font-semibold rounded-lg py-3 text-sm tracking-wider transition-all disabled:opacity-50"
                 >
                   <Send size={14} />
-                  {isSubmitting ? "SENDING..." : "SEND MESSAGE"}
+                  {isSubmitting ? t.contact.sending : t.contact.sendMessage}
                 </motion.button>
               </form>
 
@@ -429,7 +433,7 @@ export function Contact() {
                   className="mt-5 p-4 rounded-lg border border-emerald-500/30 bg-emerald-500/5 text-emerald-400 text-sm flex items-center gap-2.5"
                 >
                   <CheckCircle size={16} />
-                  <span>Message sent successfully! Thank you.</span>
+                  <span>{t.contact.success}</span>
                 </motion.div>
               )}
 

@@ -1,60 +1,55 @@
 import { Trophy, Award, Calendar, Briefcase, GraduationCap, Cpu } from "lucide-react";
 import { FadeUp } from "./FadeUp";
+import { useLanguage } from "../hooks/useLanguage";
 
 export function TimelineAchievements() {
+  const { t } = useLanguage();
+
   const timelineItems = [
     {
-      year: "2025 - Present",
-      title: "GandI Open World Game (Sole Developer)",
+      ...t.timelineAchievements.timelineItems[0],
       icon: <Briefcase size={16} className="text-primary" />,
-      desc: "Designed and engineered an open world game in 3 months. Attracted 1,200+ players; partnered with Kinetic Hosting for publishing and global distribution.",
     },
     {
-      year: "2024",
-      title: "Android Malware Detection (Leader & Developer)",
+      ...t.timelineAchievements.timelineItems[1],
       icon: <Cpu size={16} className="text-primary" />,
-      desc: "Led development of a system at Prince Sattam Bin Abdulaziz University using static code analysis and ML, achieving 99.4% (Dataset 2) and 96.25% (Dataset 1) accuracy.",
     },
     {
-      year: "2024",
-      title: "IT Support Specialist (Internship)",
+      ...t.timelineAchievements.timelineItems[2],
       icon: <Briefcase size={16} className="text-primary" />,
-      desc: "Diagnosed and resolved hardware/software incidents at Artar, improving internal system stability and workflow uptime.",
     },
     {
-      year: "Education",
-      title: "B.S. in Computer Science",
+      ...t.timelineAchievements.timelineItems[3],
       icon: <GraduationCap size={16} className="text-primary" />,
-      desc: "Prince Sattam Bin Abdulaziz University (Al-Kharj, Saudi Arabia). Specialized in programming, algorithms, and machine learning methodologies.",
     },
   ];
 
   const achievements = [
     {
+      ...t.timelineAchievements.achievements[0],
       icon: <Trophy className="text-primary w-6 h-6" />,
-      title: "5th Place Nationwide",
-      subtitle: "Al-Khwarizmi Programming Contest",
-      desc: "Ranked 5th in the Saudi Arabia National Java Programming Contest, solving advanced algorithmic challenges under high time pressure.",
     },
     {
+      ...t.timelineAchievements.achievements[1],
       icon: <Trophy className="text-primary w-6 h-6" />,
-      title: "5th Place in KSA",
-      subtitle: "ACM Certification Exam",
-      desc: "Ranked 5th nationwide on the ACM Certification Exam, demonstrating top-tier expertise in computer science and programming fundamentals.",
     },
     {
+      ...t.timelineAchievements.achievements[2],
       icon: <Award className="text-primary w-6 h-6" />,
-      title: "30+ Professional Certificates",
-      subtitle: "Great Learning (2025 - 2026)",
-      desc: "Granted over 30 specialized certificates in Machine Learning and Data Science, covering advanced algorithms, neural networks, and EDA.",
     },
     {
+      ...t.timelineAchievements.achievements[3],
       icon: <Award className="text-primary w-6 h-6" />,
-      title: "Software Engineering Club Award",
-      subtitle: "University contribution",
-      desc: "Recognized for contributions and excellence in software development practices, student mentorship, and workshop leadership (2022).",
     },
   ];
+
+  const heading1Parts = t.timelineAchievements.heading.split(t.timelineAchievements.headingSerifWord);
+  const heading1Before = heading1Parts[0] ?? "";
+  const heading1After = heading1Parts.slice(1).join(t.timelineAchievements.headingSerifWord) ?? "";
+
+  const heading2Parts = t.timelineAchievements.heading2.split(t.timelineAchievements.heading2SerifWord);
+  const heading2Before = heading2Parts[0] ?? "";
+  const heading2After = heading2Parts.slice(1).join(t.timelineAchievements.heading2SerifWord) ?? "";
 
   return (
     <section className="py-24 border-t border-border/30">
@@ -64,16 +59,16 @@ export function TimelineAchievements() {
           <div className="lg:col-span-6 text-center flex flex-col items-center">
             <FadeUp as="div" delay={0}>
               <span className="block text-xs tracking-[3px] uppercase text-muted-foreground mb-3">
-                TIMELINE
+                {t.timelineAchievements.tag}
               </span>
             </FadeUp>
             <FadeUp as="h2" delay={0.08} className="text-3xl font-medium mb-10 tracking-tightish text-center">
-              Career <span className="serif">Timeline</span>
+              {heading1Before}<span className="serif">{t.timelineAchievements.headingSerifWord}</span>{heading1After}
             </FadeUp>
 
             <div className="space-y-10 w-full max-w-md">
               {timelineItems.map((item, idx) => (
-                <FadeUp key={item.title} delay={idx * 0.1} className="flex flex-col items-center text-center">
+                <FadeUp key={idx} delay={idx * 0.1} className="flex flex-col items-center text-center">
                   <div className="w-9 h-9 rounded-full bg-foreground/5 border border-border/40 flex items-center justify-center mb-3 shadow-sm text-primary">
                     {item.icon}
                   </div>
@@ -96,16 +91,16 @@ export function TimelineAchievements() {
           <div className="lg:col-span-6 text-center flex flex-col items-center">
             <FadeUp as="div" delay={0.1}>
               <span className="block text-xs tracking-[3px] uppercase text-muted-foreground mb-3">
-                HONORS
+                {t.timelineAchievements.tag2}
               </span>
             </FadeUp>
             <FadeUp as="h2" delay={0.18} className="text-3xl font-medium mb-10 tracking-tightish text-center">
-              Key <span className="serif">Achievements</span>
+              {heading2Before}<span className="serif">{t.timelineAchievements.heading2SerifWord}</span>{heading2After}
             </FadeUp>
 
             <div className="space-y-6 w-full max-w-md">
               {achievements.map((item, idx) => (
-                <FadeUp key={item.title} delay={idx * 0.12}>
+                <FadeUp key={idx} delay={idx * 0.12}>
                   <div className="liquid-glass p-6 rounded-xl flex flex-col items-center text-center gap-4 hover:border-foreground/30 transition-all duration-300">
                     <div className="w-10 h-10 rounded-lg bg-foreground/5 flex items-center justify-center shrink-0 border border-border/30">
                       {item.icon}
@@ -129,5 +124,3 @@ export function TimelineAchievements() {
     </section>
   );
 }
-
-

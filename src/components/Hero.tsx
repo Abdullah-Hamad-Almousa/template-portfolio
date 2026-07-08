@@ -2,8 +2,10 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { FadeUp } from "./FadeUp";
 import { NeuralBackdrop } from "./backdrops/NeuralBackdrop";
+import { useLanguage } from "../hooks/useLanguage";
 
 export function Hero() {
+  const { t } = useLanguage();
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
@@ -37,18 +39,18 @@ export function Hero() {
               />
             </div>
           </div>
-          <span className="text-sm text-muted-foreground tracking-wider uppercase">Machine Learning Developer</span>
+          <span className="text-sm text-muted-foreground tracking-wider uppercase">{t.hero.role}</span>
         </FadeUp>
 
         <FadeUp as="h1" delay={0.08}>
           <span className="block text-5xl md:text-7xl lg:text-8xl font-medium leading-[1.02] tracking-tighter3 mb-6">
-            Abdullah <span className="serif">Almousa</span>
+            Abdullah <span className="serif">{t.hero.name.split(" ")[1]}</span>
           </span>
         </FadeUp>
 
         <FadeUp as="p" delay={0.16}>
           <span className="block text-lg leading-relaxed text-hero-subtitle max-w-[600px] mx-auto mb-9">
-            Advancing EDA and Algorithms to solve complex business problems.
+            {t.hero.tagline}
           </span>
         </FadeUp>
 
@@ -62,7 +64,7 @@ export function Hero() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email..."
+              placeholder={t.hero.emailPlaceholder}
               aria-label="Email"
               className="flex-1 bg-transparent border-0 outline-none text-foreground placeholder:text-muted-foreground text-[0.95rem] px-4 py-2.5"
             />
@@ -73,7 +75,7 @@ export function Hero() {
               transition={{ duration: 0.15, ease: "easeOut" }}
               className="bg-foreground text-background rounded-full px-8 py-3 font-semibold text-[0.9rem] tracking-wider"
             >
-              {submitted ? "SENT" : "CONNECT"}
+              {submitted ? t.hero.sent : t.hero.connect}
             </motion.button>
           </form>
         </FadeUp>

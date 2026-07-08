@@ -1,13 +1,6 @@
 import { Github, Linkedin, Globe } from "lucide-react";
 import { useEffect, useState } from "react";
-
-const NAV_LINKS = [
-  { id: "home", label: "Home" },
-  { id: "capabilities", label: "Capabilities" },
-  { id: "contact", label: "Contact" },
-  { id: "links", label: "Links" },
-  { id: "books", label: "Books" },
-];
+import { useLanguage } from "../hooks/useLanguage";
 
 interface NavbarProps {
   activePage: string;
@@ -16,7 +9,16 @@ interface NavbarProps {
 }
 
 export function Navbar({ activePage, setActivePage, showHidden }: NavbarProps) {
+  const { t, lang, toggle } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
+
+  const navLinks = [
+    { id: "home", label: t.nav.home },
+    { id: "capabilities", label: t.nav.capabilities },
+    { id: "contact", label: t.nav.contact },
+    { id: "links", label: t.nav.links },
+    { id: "books", label: t.nav.books },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -25,7 +27,7 @@ export function Navbar({ activePage, setActivePage, showHidden }: NavbarProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const visibleLinks = NAV_LINKS.filter(
+  const visibleLinks = navLinks.filter(
     (link) => showHidden || (link.id !== "links" && link.id !== "books")
   );
 
@@ -51,7 +53,7 @@ export function Navbar({ activePage, setActivePage, showHidden }: NavbarProps) {
             className="w-[1.35rem] h-[1.35rem] object-contain"
           />
         </div>
-        <span className="font-bold text-[1.05rem] tracking-tight">Abdullah Almousa</span>
+        <span className="font-bold text-[1.05rem] tracking-tight">{t.hero.name}</span>
       </div>
 
       <div className="hidden md:flex items-center gap-3 text-sm">
@@ -78,6 +80,12 @@ export function Navbar({ activePage, setActivePage, showHidden }: NavbarProps) {
       </div>
 
       <div className="flex items-center gap-2.5">
+        <button
+          onClick={toggle}
+          className="liquid-glass px-3 h-10 rounded-full flex items-center justify-center text-sm font-semibold text-foreground hover:scale-105 active:scale-95 transition-transform duration-200"
+        >
+          {lang === "en" ? "عربى" : "EN"}
+        </button>
         <SocialButton label="GitHub" href="https://github.com/Abdullah-Hamad-Almousa">
           <Github size={18} strokeWidth={2} />
         </SocialButton>

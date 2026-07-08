@@ -1,38 +1,27 @@
 import { FadeUp } from "./FadeUp";
 import { TrainingLoop } from "./backdrops/TrainingLoop";
-
-const FEATURES = [
-  {
-    title: "Malware Detection ML",
-    body: "Developed an ML detection system using static features, achieving 99.1% classification accuracy on large Android malware datasets.",
-  },
-  {
-    title: "GandI Adventure Game",
-    body: "Engineered using Java and Kotlin, featuring complex JSON state management and partnered distribution with Kinetic Hosting.",
-  },
-  {
-    title: "Advanced EDA & Algorithms",
-    body: "Statistical analysis on high-dimensional datasets with custom mathematical optimization algorithms.",
-  },
-  {
-    title: "Power BI Business Intelligence",
-    body: "Interactive dashboards visualizing core metrics, ML pipeline stability, and operational downtime.",
-  },
-];
+import { useLanguage } from "../hooks/useLanguage";
 
 export function SolutionSection() {
+  const { t } = useLanguage();
+  const heading = t.solutionSection.heading;
+  const serifWord = t.solutionSection.headingSerifWord;
+  const parts = heading.split(serifWord);
+  const before = parts[0] ?? "";
+  const after = parts.slice(1).join(serifWord) ?? "";
+
   return (
     <section id="usecases" className="py-32 md:py-44 border-t border-border/30 text-center">
       <div className="container flex flex-col items-center">
         <FadeUp as="div" delay={0}>
           <span className="block text-xs tracking-[3px] uppercase text-muted-foreground mb-[18px]">
-            PORTFOLIO
+            {t.solutionSection.tag}
           </span>
         </FadeUp>
 
         <FadeUp as="h2" delay={0.08}>
           <span className="block text-4xl md:text-6xl font-medium tracking-tightish leading-tight max-w-[760px] mb-12 mx-auto">
-            Selected projects and <span className="serif">featured</span> work
+            {before}<span className="serif">{serifWord}</span>{after}
           </span>
         </FadeUp>
 
@@ -43,7 +32,7 @@ export function SolutionSection() {
         </FadeUp>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 w-full text-center">
-          {FEATURES.map((f, i) => (
+          {t.solutionSection.features.map((f, i) => (
             <FadeUp key={f.title} delay={i * 0.06}>
               <div className="flex flex-col items-center">
                 <h4 className="text-base font-semibold mb-2.5">{f.title}</h4>

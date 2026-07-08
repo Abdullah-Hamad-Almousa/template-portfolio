@@ -2,12 +2,22 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { Cpu, Eye, BarChart3, ChevronRight, Play, RefreshCw, Code, Copy, Check } from "lucide-react";
 import { FadeUp } from "./FadeUp";
+import { useLanguage } from "../hooks/useLanguage";
 
 export function Capabilities() {
+  const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
   const [inferenceRunning, setInferenceRunning] = useState(false);
   const [pipelineStep, setPipelineStep] = useState(0);
   const [inferenceResult, setInferenceResult] = useState<string | null>(null);
+
+  const headingParts = t.capabilities.heading.split(t.capabilities.headingSerifWord);
+  const headingBefore = headingParts[0] ?? "";
+  const headingAfter = headingParts.slice(1).join(t.capabilities.headingSerifWord) ?? "";
+
+  const showcaseHeadingParts = t.capabilities.showcaseHeading.split(t.capabilities.showcaseHeadingSerifWord);
+  const showcaseHeadingBefore = showcaseHeadingParts[0] ?? "";
+  const showcaseHeadingAfter = showcaseHeadingParts.slice(1).join(t.capabilities.showcaseHeadingSerifWord) ?? "";
 
   const codeString = `import tensorflow as tf
 from tensorflow.keras import layers, models
@@ -55,11 +65,17 @@ def create_cnn_model(input_shape=(28, 28, 1), num_classes=10):
         setTimeout(() => {
           setPipelineStep(4);
           setInferenceRunning(false);
-          setInferenceResult("Class: Handwritten Digit '7' (Conf: 99.4%)");
+          setInferenceResult(t.capabilities.inferenceResult);
         }, 1000);
       }, 1000);
     }, 1000);
   };
+
+  const serviceCards = [
+    { icon: <BarChart3 className="text-primary w-6 h-6" />, ...t.capabilities.serviceCards[0] },
+    { icon: <Cpu className="text-primary w-6 h-6" />, ...t.capabilities.serviceCards[1] },
+    { icon: <Eye className="text-primary w-6 h-6" />, ...t.capabilities.serviceCards[2] },
+  ];
 
   return (
     <section className="pt-28 pb-20 container max-w-6xl">
@@ -67,44 +83,25 @@ def create_cnn_model(input_shape=(28, 28, 1), num_classes=10):
       <div className="text-center mb-16">
         <FadeUp as="div" delay={0}>
           <span className="block text-xs tracking-[3px] uppercase text-muted-foreground mb-3">
-            CAPABILITIES
+            {t.capabilities.tag}
           </span>
         </FadeUp>
         <FadeUp as="h1" delay={0.08}>
           <span className="block text-5xl md:text-6xl font-medium tracking-tightish">
-            What I Can <span className="serif">Do</span>
+            {headingBefore}<span className="serif">{t.capabilities.headingSerifWord}</span>{headingAfter}
           </span>
         </FadeUp>
         <FadeUp as="p" delay={0.16}>
           <span className="block text-muted-foreground text-base max-w-xl mx-auto mt-4 leading-relaxed">
-            I perform advanced exploratory analysis, design high-precision algorithms, and train scalable deep learning models.
+            {t.capabilities.sub}
           </span>
         </FadeUp>
       </div>
 
       {/* Services Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
-        {[
-          {
-            icon: <BarChart3 className="text-primary w-6 h-6" />,
-            title: "Exploratory Data Analysis (EDA)",
-            description:
-              "Performing deep dives into large, high-dimensional datasets to clean, normalize, and expose hidden trends that inform machine learning engineering and business logic.",
-          },
-          {
-            icon: <Cpu className="text-primary w-6 h-6" />,
-            title: "Advanced Algorithmic Design",
-            description:
-              "Designing specialized mathematical models, regression pipelines, and custom metrics for high-accuracy applications, focusing on robust predictive stability.",
-          },
-          {
-            icon: <Eye className="text-primary w-6 h-6" />,
-            title: "Deep Learning & Computer Vision",
-            description:
-              "Training custom convolutional architectures (CNNs) and deep neural networks in PyTorch and TensorFlow, optimizing custom loops and feature extraction blocks.",
-          },
-        ].map((item, idx) => (
-          <FadeUp key={item.title} delay={idx * 0.1}>
+        {serviceCards.map((item, idx) => (
+          <FadeUp key={idx} delay={idx * 0.1}>
             <div className="liquid-glass p-8 rounded-2xl h-full flex flex-col items-start hover:border-foreground/35 transition-all duration-300">
               <div className="w-12 h-12 rounded-xl bg-foreground/5 flex items-center justify-center mb-6 border border-border/30">
                 {item.icon}
@@ -120,34 +117,12 @@ def create_cnn_model(input_shape=(28, 28, 1), num_classes=10):
         {/* Project Showcase - Left Side */}
         <div className="lg:col-span-5">
           <FadeUp as="h2" delay={0} className="text-2xl md:text-3xl font-medium tracking-tight mb-8">
-            Project <span className="serif">Showcase</span>
+            {showcaseHeadingBefore}<span className="serif">{t.capabilities.showcaseHeadingSerifWord}</span>{showcaseHeadingAfter}
           </FadeUp>
 
           <FadeUp delay={0.08}>
             <div className="space-y-6">
-              {[
-                {
-                  category: "Computer Vision",
-                  projects: [
-                    { name: "DeepLearningMnist", desc: "CNN for handwritten digit recognition with over 98% accuracy." },
-                    { name: "TensorflowImgClassification", desc: "End-to-end multi-class image classification and augmentation pipeline." },
-                  ],
-                },
-                {
-                  category: "Predictive Modeling",
-                  projects: [
-                    { name: "DeepLearningWine", desc: "Physicochemical quality assessment neural network." },
-                    { name: "LoadApproval", desc: "Automated loan eligibility prediction system using gradient boosting." },
-                  ],
-                },
-                {
-                  category: "Deep Learning Experiments",
-                  projects: [
-                    { name: "TestTwoTensorFlow", desc: "Custom training loops and gradient visualizers." },
-                    { name: "TenserflowEp0", desc: "Foundational pattern implementations in TensorFlow." },
-                  ],
-                },
-              ].map((cat) => (
+              {t.capabilities.categories.map((cat) => (
                 <div key={cat.category} className="relative pl-6 border-l border-border/40">
                   <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-foreground/50" />
                   <h4 className="text-sm font-semibold tracking-wider text-muted-foreground uppercase mb-3">
@@ -180,7 +155,7 @@ def create_cnn_model(input_shape=(28, 28, 1), num_classes=10):
         <div className="lg:col-span-7">
           <FadeUp as="div" delay={0.16} className="flex justify-between items-center mb-4">
             <span className="text-sm font-medium flex items-center gap-2 text-muted-foreground">
-              <Code size={16} /> CNN Architecture Template
+              <Code size={16} /> {t.capabilities.codeLabel}
             </span>
             <button
               onClick={copyCode}
@@ -188,11 +163,11 @@ def create_cnn_model(input_shape=(28, 28, 1), num_classes=10):
             >
               {copied ? (
                 <>
-                  <Check size={12} className="text-green-400" /> Copied!
+                  <Check size={12} className="text-green-400" /> {t.capabilities.copied}
                 </>
               ) : (
                 <>
-                  <Copy size={12} /> Copy Code
+                  <Copy size={12} /> {t.capabilities.copyCode}
                 </>
               )}
             </button>
@@ -219,27 +194,23 @@ def create_cnn_model(input_shape=(28, 28, 1), num_classes=10):
         <div className="liquid-glass p-8 rounded-2xl border border-border/40 text-center relative overflow-hidden">
           <div className="absolute top-0 right-0 p-4">
             <span className="text-[10px] uppercase tracking-widest text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
-              Live Mockup
+              {t.capabilities.mockupBadge}
             </span>
           </div>
 
-          <h3 className="text-xl font-medium mb-3">ML Pipeline Visualizer</h3>
+          <h3 className="text-xl font-medium mb-3">{t.capabilities.pipelineVisualizerTitle}</h3>
           <p className="text-sm text-muted-foreground max-w-xl mx-auto mb-8">
-            Click Run Inference to simulate data ingestion, feature extraction, convolutional pooling, and softmax output generation.
+            {t.capabilities.pipelineVisualizerDesc}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-8 relative">
-            {[
-              { id: 1, name: "Data Ingestion", step: "Ingesting 28x28 grayscale image arrays" },
-              { id: 2, name: "Feature Map", step: "Computing 32 feature matrices (Relu)" },
-              { id: 3, name: "Max Pooling", step: "Downsampling spatial resolution to 14x14" },
-              { id: 4, name: "Softmax Output", step: "Mapping 64 flattened outputs to probability vector" },
-            ].map((s) => {
-              const active = pipelineStep >= s.id;
-              const current = pipelineStep === s.id;
+            {t.capabilities.pipelineSteps.map((s, idx) => {
+              const stepId = idx + 1;
+              const active = pipelineStep >= stepId;
+              const current = pipelineStep === stepId;
               return (
                 <div
-                  key={s.id}
+                  key={stepId}
                   className={`p-4 rounded-xl border transition-all duration-300 text-left ${
                     current
                       ? "border-primary bg-primary/5 shadow-md shadow-primary/5"
@@ -249,7 +220,7 @@ def create_cnn_model(input_shape=(28, 28, 1), num_classes=10):
                   }`}
                 >
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-xs font-mono text-muted-foreground">Step 0{s.id}</span>
+                    <span className="text-xs font-mono text-muted-foreground">Step 0{stepId}</span>
                     {current && <RefreshCw size={12} className="animate-spin text-primary" />}
                   </div>
                   <h4 className="text-sm font-semibold mb-1">{s.name}</h4>
@@ -268,7 +239,7 @@ def create_cnn_model(input_shape=(28, 28, 1), num_classes=10):
               }`}
             >
               <Play size={14} fill="currentColor" />
-              {inferenceRunning ? "Processing..." : "Run Inference"}
+              {inferenceRunning ? t.capabilities.processing : t.capabilities.runInference}
             </button>
             <button
               onClick={() => {
@@ -278,7 +249,7 @@ def create_cnn_model(input_shape=(28, 28, 1), num_classes=10):
               }}
               className="text-xs text-muted-foreground hover:text-foreground underline underline-offset-4"
             >
-              Reset Canvas
+              {t.capabilities.resetCanvas}
             </button>
           </div>
 

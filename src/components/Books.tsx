@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Search } from "lucide-react";
 import { FadeUp } from "./FadeUp";
+import { useLanguage } from "../hooks/useLanguage";
 
 interface Book {
   title: string;
@@ -232,8 +233,13 @@ const BOOKS_DATA: Book[] = [
 ];
 
 export function Books() {
+  const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<string>("all");
+
+  const headingParts = t.books.heading.split(t.books.headingSerifWord);
+  const headingBefore = headingParts[0] ?? "";
+  const headingAfter = headingParts.slice(1).join(t.books.headingSerifWord) ?? "";
 
   const filteredBooks = BOOKS_DATA.filter((book) => {
     const matchesSearch = book.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -246,19 +252,19 @@ export function Books() {
       case "reading":
         return (
           <span className="text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full border border-orange-500/30 bg-orange-500/10 text-orange-400">
-            Reading
+            {t.books.statusReading}
           </span>
         );
       case "planning":
         return (
           <span className="text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400">
-            Planning
+            {t.books.statusPlanning}
           </span>
         );
       case "finished":
         return (
           <span className="text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
-            Finished
+            {t.books.statusFinished}
           </span>
         );
     }
@@ -270,17 +276,17 @@ export function Books() {
       <div className="text-center mb-12">
         <FadeUp as="div" delay={0}>
           <span className="block text-xs tracking-[3px] uppercase text-muted-foreground mb-3">
-            JOURNEY
+            {t.books.tag}
           </span>
         </FadeUp>
         <FadeUp as="h1" delay={0.08}>
           <span className="block text-5xl md:text-6xl font-medium tracking-tightish">
-            Reading <span className="serif">List</span>
+            {headingBefore}<span className="serif">{t.books.headingSerifWord}</span>{headingAfter}
           </span>
         </FadeUp>
         <FadeUp as="p" delay={0.16}>
           <span className="block text-muted-foreground text-base max-w-xl mx-auto mt-4 leading-relaxed">
-            A curated log of books I am reading, planning to read, or have completed.
+            {t.books.sub}
           </span>
         </FadeUp>
       </div>
@@ -291,7 +297,7 @@ export function Books() {
           <Search size={16} className="absolute left-3 text-muted-foreground" />
           <input
             type="text"
-            placeholder="Search books..."
+            placeholder={t.books.searchPlaceholder}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full bg-foreground/5 border border-border/40 rounded-full pl-10 pr-4 py-2.5 text-sm outline-none text-foreground focus:border-primary/80"
@@ -299,7 +305,7 @@ export function Books() {
         </div>
 
         <div className="flex gap-2">
-          {["all", "reading", "planning", "finished"].map((status) => (
+          {(["all", "reading", "planning", "finished"] as const).map((status) => (
             <button
               key={status}
               onClick={() => setFilterStatus(status)}
@@ -309,7 +315,7 @@ export function Books() {
                   : "bg-foreground/5 border-border/40 text-muted-foreground hover:text-foreground"
               }`}
             >
-              {status}
+              {t.books.filters[status]}
             </button>
           ))}
         </div>
@@ -348,7 +354,7 @@ export function Books() {
 
       {filteredBooks.length === 0 && (
         <FadeUp delay={0}>
-          <div className="text-center py-20 text-muted-foreground">No books match your criteria.</div>
+          <div className="text-center py-20 text-muted-foreground">{t.books.noMatch}</div>
         </FadeUp>
       )}
     </section>

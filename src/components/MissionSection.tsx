@@ -1,11 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { LossCurveCanvas } from "./backdrops/LossCurveCanvas";
-
-const PARAGRAPH_1 =
-  "I build systems where raw data meets advanced algorithms — designing optimized pipelines, exploring high-dimensional features, and crafting neural models that turn complexity into clarity.";
-const PARAGRAPH_2 =
-  "An engineering approach focused on mathematical precision, computational scale, and model reproducibility — filtering out the noise to deliver actual predictive value.";
+import { useLanguage } from "../hooks/useLanguage";
 
 const HIGHLIGHTS = new Set(["data", "meets", "algorithms", "precision", "scale"]);
 
@@ -14,14 +10,15 @@ function tokenize(text: string): string[] {
 }
 
 export function MissionSection() {
+  const { t, lang } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start 80%", "end 30%"],
   });
 
-  const p1 = useMemo(() => tokenize(PARAGRAPH_1), []);
-  const p2 = useMemo(() => tokenize(PARAGRAPH_2), []);
+  const p1 = useMemo(() => tokenize(t.missionSection.paragraph1), [t.missionSection.paragraph1]);
+  const p2 = useMemo(() => tokenize(t.missionSection.paragraph2), [t.missionSection.paragraph2]);
   const totalWords = p1.filter((w) => /\S/.test(w)).length + p2.filter((w) => /\S/.test(w)).length;
 
   return (
@@ -43,7 +40,7 @@ export function MissionSection() {
       <div className="max-w-[900px] mx-auto">
         <p className="text-2xl md:text-4xl lg:text-5xl font-medium leading-snug tracking-tightish">
           {p1.map((token, i) => (
-            <Word key={`p1-${i}`} token={token} index={i} totalWords={totalWords} progress={scrollYProgress} />
+            <Word key={`p1-${i}`} token={token} index={i} totalWords={totalWords} progress={scrollYProgress} lang={lang} />
           ))}
         </p>
         <p className="text-xl md:text-2xl lg:text-3xl font-medium leading-snug mt-10">
@@ -56,6 +53,7 @@ export function MissionSection() {
                 index={wordIdx}
                 totalWords={totalWords}
                 progress={scrollYProgress}
+                lang={lang}
               />
             );
           })}
@@ -70,15 +68,17 @@ function Word({
   index,
   totalWords,
   progress,
+  lang,
 }: {
   token: string;
   index: number;
   totalWords: number;
   progress: ReturnType<typeof useScroll>["scrollYProgress"];
+  lang: string;
 }) {
   const clean = token.replace(/[^a-zA-Z]/g, "").toLowerCase();
   const isWord = /\S/.test(token) && clean.length > 0;
-  const isHighlight = HIGHLIGHTS.has(clean);
+  const isHighlight = lang !== "ar" && HIGHLIGHTS.has(clean);
 
   const wordStart = index / totalWords;
   const wordEnd = (index + 1) / totalWords;
