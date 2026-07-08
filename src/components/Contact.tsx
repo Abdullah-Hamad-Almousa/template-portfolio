@@ -12,11 +12,15 @@ export function Contact() {
     role: "",
     subject: "",
     message: "",
+    _gotcha: "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null);
+  const [errorMessage, setErrorMessage] = useState(
+    "Failed to send message. Please try again or email directly."
+  );
   const [isWorkingHours, setIsWorkingHours] = useState(true);
 
   // Check if current Riyadh time is between 9 AM and 6 PM AST (UTC+3)
@@ -91,16 +95,47 @@ export function Contact() {
     e.preventDefault();
     if (!validate()) return;
 
+    // Honeypot: if filled, silently treat as spam — pretend success
+    if (formData._gotcha) {
+      setSubmitStatus("success");
+      setFormData({
+        inquiryType: "",
+        name: "",
+        email: "",
+        organization: "",
+        role: "",
+        subject: "",
+        message: "",
+        _gotcha: "",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus(null);
 
+    // Pack extra fields into message since backend only accepts name/email/message
+    const packedMessage = [
+      `Inquiry Type: ${formData.inquiryType}`,
+      `Organization: ${formData.organization}`,
+      `Role: ${formData.role}`,
+      `Subject: ${formData.subject}`,
+      "",
+      formData.message,
+    ].join("\n");
+
     try {
-      const response = await fetch("https://formspree.io/f/meorrjjr", {
+      const response = await fetch("https://api.modelai.website/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: packedMessage,
+          _gotcha: "",
+        }),
       });
 
       if (response.ok) {
@@ -113,11 +148,24 @@ export function Contact() {
           role: "",
           subject: "",
           message: "",
+          _gotcha: "",
         });
+      } else if (response.status === 400) {
+        const data = await response.json().catch(() => ({}));
+        if (data.errors && Array.isArray(data.errors)) {
+          setErrors(Object.fromEntries(data.errors.map((e: { field: string; message: string }) => [e.field, e.message])));
+        }
+        setErrorMessage("Please check the form fields and try again.");
+        setSubmitStatus("error");
+      } else if (response.status === 429) {
+        setErrorMessage("Too many requests. Please try again later.");
+        setSubmitStatus("error");
       } else {
+        setErrorMessage("Something went wrong. Please try again or email directly.");
         setSubmitStatus("error");
       }
     } catch {
+      setErrorMessage("Network error. Please check your connection and try again.");
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
@@ -173,8 +221,8 @@ export function Contact() {
               </div>
               <div>
                 <span className="text-xs text-muted-foreground block">Email</span>
-                <a href="mailto:abdullahmlwork@gmail.com" className="hover:underline">
-                  abdullahmlwork@gmail.com
+                <a href="mailto:abdullahalmousa@modelai.website" className="hover:underline">
+                  abdullahalmousa@modelai.website
                 </a>
               </div>
             </div>
@@ -196,6 +244,17 @@ export function Contact() {
           <FadeUp delay={0.16}>
             <div className="liquid-glass p-8 rounded-2xl border border-border/30">
               <form onSubmit={handleSubmit} className="space-y-5 text-left">
+                {/* Honeypot — hidden from real users, bots fill it */}
+                <input
+                  type="text"
+                  name="_gotcha"
+                  value={formData._gotcha}
+                  onChange={handleInputChange}
+                  autoComplete="off"
+                  tabIndex={-1}
+                  aria-hidden="true"
+                  style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", overflow: "hidden" }}
+                />
                 {/* Inquiry Type */}
                 <div className="space-y-1.5">
                   <label className="text-xs font-semibold text-muted-foreground uppercase">
@@ -380,7 +439,7 @@ export function Contact() {
                   className="mt-5 p-4 rounded-lg border border-red-500/30 bg-red-500/5 text-red-400 text-sm flex items-center gap-2.5"
                 >
                   <AlertCircle size={16} />
-                  <span>Failed to send message. Please try again or email directly.</span>
+                  <span>{errorMessage}</span>
                 </motion.div>
               )}
             </div>

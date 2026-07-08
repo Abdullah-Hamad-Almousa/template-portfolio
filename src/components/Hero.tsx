@@ -11,7 +11,7 @@ export function Hero() {
     e.preventDefault();
     if (!email) return;
     setSubmitted(true);
-    window.location.href = `mailto:abdullahmlwork@gmail.com?subject=Portfolio%20Connection&body=Hi%20Abdullah,%0D%0A%0D%0AMy%20email%20is%20${email}.%20I'd%20love%20to%20connect%20and%20discuss%20ML%20opportunities!`;
+    window.location.href = `mailto:abdullahalmousa@modelai.website?subject=Portfolio%20Connection&body=Hi%20Abdullah,%0D%0A%0D%0AMy%20email%20is%20${email}.%20I'd%20love%20to%20connect%20and%20discuss%20ML%20opportunities!`;
     setTimeout(() => setSubmitted(false), 2200);
   };
 

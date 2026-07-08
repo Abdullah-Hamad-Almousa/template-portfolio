@@ -47,7 +47,7 @@ export function CtaSection() {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.15 }}
-              onClick={() => window.location.href = "mailto:abdullahmlwork@gmail.com?subject=Project%20Inquiry"}
+              onClick={() => window.location.href = "mailto:abdullahalmousa@modelai.website?subject=Project%20Inquiry"}
               className="bg-foreground text-background rounded-[10px] px-8 py-3.5 font-semibold text-[0.9rem]"
             >
               Email Me
