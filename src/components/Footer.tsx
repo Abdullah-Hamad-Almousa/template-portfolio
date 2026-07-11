@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useLanguage } from "../hooks/useLanguage";
 
 interface FooterProps {
@@ -6,6 +7,16 @@ interface FooterProps {
 
 export function Footer({ onToggleHidden }: FooterProps) {
   const { t } = useLanguage();
+  const [visitorCount, setVisitorCount] = useState<number | string>("...");
+
+  useEffect(() => {
+    if (sessionStorage.getItem("visitor_counted")) return;
+    sessionStorage.setItem("visitor_counted", "1");
+    fetch("https://api.modelai.website/visitors")
+      .then((res) => res.json())
+      .then((data) => setVisitorCount(data.count ?? "..."))
+      .catch(() => setVisitorCount("..."));
+  }, []);
 
   const FOOTER_LINKS = [
     { label: t.footer.linkedin, href: "https://www.linkedin.com/in/abdullah-almousa-a76562237" },
@@ -30,6 +41,9 @@ export function Footer({ onToggleHidden }: FooterProps) {
             {link.label}
           </a>
         ))}
+        <span className="text-muted-foreground">
+          {t.footer.visitors}: {typeof visitorCount === "number" ? visitorCount.toLocaleString() : visitorCount}
+        </span>
         <button
           onClick={onToggleHidden}
           className="w-5 h-5 flex items-center justify-center focus:outline-none cursor-default float-water"

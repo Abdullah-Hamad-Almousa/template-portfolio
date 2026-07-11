@@ -75,6 +75,7 @@ export interface Footer {
   linkedin: string;
   github: string;
   kaggle: string;
+  visitors: string;
 }
 
 export interface ServiceCard {
@@ -333,6 +334,7 @@ export const translations: Translations = {
       linkedin: 'LinkedIn',
       github: 'GitHub',
       kaggle: 'Kaggle',
+      visitors: 'Visitors',
     },
     capabilities: {
       tag: 'CAPABILITIES',
@@ -588,6 +590,7 @@ export const translations: Translations = {
       linkedin: 'LinkedIn',
       github: 'GitHub',
       kaggle: 'Kaggle',
+      visitors: 'الزوّار',
     },
     capabilities: {
       tag: 'القدرات',
